@@ -21,15 +21,16 @@
       </template>
       <el-menu-item-group>
         <span slot="title">分组一</span>
-        <el-menu-item index="1-1" @click="$router.push('/')">Home</el-menu-item>
-        <el-menu-item index="1-3" @click="$router.push('hello')">Hello</el-menu-item>
+        <el-menu-item index="1-1" @click="handleTabsEdit('welcome', 'act')">Home</el-menu-item>
+        <el-menu-item index="1-2" @click="handleTabsEdit('chart','act')">Chart</el-menu-item>
+        <el-menu-item index="1-3" @click="handleTabsEdit('hello','act')">Hello</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="route">
-        <el-menu-item index="1-3" @click="$router.push('chart')">Chart</el-menu-item>
+        <el-menu-item index="1-4" @click="handleTabsEdit('chart','act')">Chart</el-menu-item>
       </el-menu-item-group>
-      <el-submenu index="1-4">
+      <el-submenu index="1-5">
         <span slot="title">选项4</span>
-        <el-menu-item index="1-4-1">选项1</el-menu-item>
+        <el-menu-item index="1-5-1">选项1</el-menu-item>
       </el-submenu>
     </el-submenu>
     <el-menu-item index="2">
@@ -64,7 +65,17 @@
   </el-header>
 
   <el-main>
-    <router-view></router-view>
+    <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit" @tab-click="tabClick">
+  <el-tab-pane
+    :key="item.name"
+    v-for="item in editableTabs"
+    :label="item.title"
+    :name="item.name"
+  >
+  <router-view></router-view>
+<!--<tab-comp :content="item.title"></tab-comp>-->
+  </el-tab-pane>
+</el-tabs>
   </el-main>
 </el-container>
 
@@ -72,13 +83,25 @@
 </template>
 
 <script>
+import tabComp from './tabComp'
 export default {
   data () {
     return {
       isCollapse: false,
       activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      editableTabsValue: '2',
+      editableTabs: [{
+        title: 'welcome',
+        name: '1',
+        content: '<router-view></router-view'
+      }
+      ],
+      tabIndex: 2
     }
+  },
+  components: {
+    tabComp
   },
   methods: {
     handleOpen (key, keyPath) {
@@ -92,6 +115,52 @@ export default {
     },
     activeCollapse () {
       this.isCollapse = !this.isCollapse
+    },
+    handleTabsEdit (targetName, action) {
+      var count = 0
+      if (action === 'act') {
+        let tabs = this.editableTabs
+        tabs.forEach((tab,index) => {
+          if (tab.title === targetName) {
+            this.editableTabsValue = tab.name
+            this.$router.push({path:tab.title})
+            count++
+          }
+        })
+      }
+      if (action === 'add' || count === 0 && action !=='remove' ) {
+        let newTabName = ++this.tabIndex + ''
+        this.editableTabs.push({
+          title: targetName,
+          name: newTabName,
+          content: 'New Tab content'
+        })
+        this.editableTabsValue = newTabName
+        this.$router.push({path:targetName})
+      }
+      if (action === 'remove') {
+        let tabs = this.editableTabs
+        let activeName = this.editableTabsValue
+        var routerName = ''
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1]
+              if (nextTab) {
+                activeName = nextTab.name
+                routerName = nextTab.title
+              }
+            }
+          })
+        }
+        this.editableTabsValue = activeName
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName)
+        this.$router.push({path:routerName})
+      }
+    },
+    tabClick (tab) {
+      this.editableTabsValue = tab.name
+      this.$router.push({path:tab.label})
     }
   }
 }

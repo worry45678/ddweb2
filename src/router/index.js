@@ -1,21 +1,42 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Chart from '@/components/Chart'
+// router
+import Chart from '../components/Chart.vue'
+import Login from '../components/Login.vue'
+import HelloWorld from '../components/HelloWorld.vue'
+import Home from '../components/Home.vue'
 
-Vue.use(Router)
+let routes = [
+  {
+    path: '/',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: Home,
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: HelloWorld
+      },
+      {
+        path: 'hello',
+        name: 'Hello',
+        component: HelloWorld
+      },
+      {
+        path: 'chart',
+        name: 'Chart',
+        component: Chart
+      },
+      {
+        path: 'welcome',
+        name: 'Welcome',
+        component: HelloWorld
+      }
+    ]
+  }
+]
 
-export default new Router({
-  routes: [
-    {
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/chart',
-      name: 'Chart',
-      component: Chart
-    }
-  ]
-})
+export default routes
