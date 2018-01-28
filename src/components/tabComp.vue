@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  props: ['type','content'],
+  props: ['type', 'content'],
   data() {
     return {
-        msg: 'message'
+      msg: 'message'
     }
   },
 }

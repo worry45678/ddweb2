@@ -1,5 +1,5 @@
 <template>
-<chart :options="polar"></chart>
+  <chart :options="polar"></chart>
 </template>
 
 <style>

@@ -3,6 +3,7 @@ import Chart from '../components/Chart.vue'
 import Login from '../components/Login.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import Home from '../components/Home.vue'
+import Table from '../components/table.vue'
 
 let routes = [
   {
@@ -22,18 +23,23 @@ let routes = [
       },
       {
         path: 'hello',
-        name: 'Hello',
+        name: 'hello',
         component: HelloWorld
       },
       {
         path: 'chart',
-        name: 'Chart',
+        name: 'chart',
         component: Chart
       },
       {
         path: 'welcome',
-        name: 'Welcome',
+        name: 'welcome',
         component: HelloWorld
+      },
+      {
+        path: 'table',
+        name: 'table',
+        component: Table
       }
     ]
   }

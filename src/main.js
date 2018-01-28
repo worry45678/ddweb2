@@ -19,11 +19,15 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    message: 'vuex message'
   },
   mutations: {
     increment (state) {
       state.count++
+    },
+    change (state) {
+      state.message = 'mutations'
     }
   }
 })

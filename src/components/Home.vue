@@ -21,12 +21,12 @@
       </template>
       <el-menu-item-group>
         <span slot="title">分组一</span>
-        <el-menu-item index="1-1" @click="handleTabsEdit('welcome', 'act')">Home</el-menu-item>
+        <el-menu-item index="1-1" @click="handleTabsEdit('welcome', 'act')">Welcome</el-menu-item>
         <el-menu-item index="1-2" @click="handleTabsEdit('chart','act')">Chart</el-menu-item>
         <el-menu-item index="1-3" @click="handleTabsEdit('hello','act')">Hello</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="route">
-        <el-menu-item index="1-4" @click="handleTabsEdit('chart','act')">Chart</el-menu-item>
+        <el-menu-item index="1-4" @click="handleTabsEdit('table','act')">Table</el-menu-item>
       </el-menu-item-group>
       <el-submenu index="1-5">
         <span slot="title">选项4</span>
@@ -123,7 +123,7 @@ export default {
         tabs.forEach((tab,index) => {
           if (tab.title === targetName) {
             this.editableTabsValue = tab.name
-            this.$router.push({path:tab.title})
+            this.$router.push({name: tab.title})
             count++
           }
         })
@@ -136,7 +136,7 @@ export default {
           content: 'New Tab content'
         })
         this.editableTabsValue = newTabName
-        this.$router.push({path:targetName})
+        this.$router.push({name: targetName})
       }
       if (action === 'remove') {
         let tabs = this.editableTabs
@@ -155,12 +155,12 @@ export default {
         }
         this.editableTabsValue = activeName
         this.editableTabs = tabs.filter(tab => tab.name !== targetName)
-        this.$router.push({path:routerName})
+        this.$router.push({name: routerName})
       }
     },
     tabClick (tab) {
       this.editableTabsValue = tab.name
-      this.$router.push({path:tab.label})
+      this.$router.push({name: tab.label})
     }
   }
 }
